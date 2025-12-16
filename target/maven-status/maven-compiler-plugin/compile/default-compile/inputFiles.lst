@@ -1,0 +1,8 @@
+/root/Bank-App/src/main/java/com/example/bankapp/BankappApplication.java
+/root/Bank-App/src/main/java/com/example/bankapp/config/SecurityConfig.java
+/root/Bank-App/src/main/java/com/example/bankapp/controller/BankController.java
+/root/Bank-App/src/main/java/com/example/bankapp/model/Account.java
+/root/Bank-App/src/main/java/com/example/bankapp/model/Transaction.java
+/root/Bank-App/src/main/java/com/example/bankapp/repository/AccountRepository.java
+/root/Bank-App/src/main/java/com/example/bankapp/repository/TransactionRepository.java
+/root/Bank-App/src/main/java/com/example/bankapp/service/AccountService.java

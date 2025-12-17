@@ -10,7 +10,7 @@ pipeline {
         PATH="$PATH:$JAVA_HOME/bin:/opt/apache-maven/bin"
     }
     parameters { 
-        string(name: 'REPO_NAME', defaultValue: '', description: 'Provide the ECR Repository Name for Application Image')
+        string(name: 'REPO_NAME', defaultValue: '027330342406.dkr.ecr.us-east-2.amazonaws.com/bankapp', description: 'Provide the ECR Repository Name for Application Image')
         string(name: 'TAG_NUMBER', defaultValue: '', description: 'Provide the TAG NUMBER')
     }
     stages {

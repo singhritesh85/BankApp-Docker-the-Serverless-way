@@ -53,7 +53,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 dir('/home/jenkins/dexter/tetra/terraform-ecs-task-definition-service-ecr-alb/main/') {
-                    sh 'terraform plan'
+                    sh 'terraform plan -var TAG_NUMBER=${TAG_NUMBER}'
                 }
             }
         }

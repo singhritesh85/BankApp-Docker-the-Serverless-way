@@ -1,0 +1,68 @@
+trigger:
+- main
+
+pr: none
+pool:
+  name: demo
+  demands:
+  - agent.name -equals demo
+
+stages:
+- stage: "Build"
+  displayName: Build
+  jobs:
+  - job: "Build"
+    displayName: Build
+    steps:
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean install'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+- stage: DockerImageBuild
+  displayName: DockerImageBuild
+  dependsOn: "Build"
+  jobs:
+  - job: DockerImageBuild
+    displayName: DockerImageBuild
+    steps:
+    - checkout: none
+    - task: CmdLine@2
+      inputs:
+        script: |
+          docker system prune -f --all
+          docker build -t devopsagentcontainer24registry.azurecr.io/samplewebapp:$(Build.BuildId) -f Dockerfile-Project-1 .
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker-Registry'
+        repository: 'samplewebapp'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile-Project-1'
+- stage: AzureContainerAppDeployment
+  displayName: AzureContainerAppDeployment
+  dependsOn: DockerImageBuild
+  jobs:
+  - deployment: AzureContainerAppDeployment
+    displayName: AzureContainerAppDeployment
+    environment: "dev"
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: none
+          - task: AzureContainerApps@1
+            inputs:
+              azureSubscription: 'Azure DevOps Service Connection'
+              acrName: 'devopsagentcontainer24registry'
+              acrUsername: 'devopsagentcontainer24registry'
+              acrPassword: 'OoeTyxE/eML+4zok57mQKH9qepb0D047TVNAzdROqf+ACRAOkbnk'
+              dockerfilePath: '**/Dockerfile-Project-1'
+              imageToBuild: 'devopsagentcontainer24registry.azurecr.io/samplewebapp:$(Build.BuildId)'
+              imageToDeploy: 'devopsagentcontainer24registry.azurecr.io/samplewebapp:$(Build.BuildId)'
+              resourceGroup: 'aca'
+              containerAppEnvironment: 'aca-environment'

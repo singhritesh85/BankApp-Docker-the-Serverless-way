@@ -41,7 +41,7 @@ stages:
       inputs:
         containerRegistry: 'Docker-Registry'
         repository: 'samplewebapp'
-        command: 'build'
+        command: 'buildAndPush'
         Dockerfile: '**/Dockerfile-Project-1'
 - stage: AzureContainerAppDeployment
   displayName: AzureContainerAppDeployment

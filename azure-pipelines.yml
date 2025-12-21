@@ -40,7 +40,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Docker-Registry'
-        repository: 'samplewebapp'
+        repository: 'devopsagentcontainer24registry.azurecr.io/samplewebapp'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile-Project-1'
 - stage: AzureContainerAppDeployment
